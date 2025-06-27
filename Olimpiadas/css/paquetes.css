@@ -1,0 +1,44 @@
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.extra-info {
+  display: none;
+  margin-top: 10px;
+  animation: fadeIn 0.3s ease;
+}
+
+.card:hover .extra-info {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.btn-add {
+  background-color: #35c77a;
+  color: white;
+}
+
+.btn-add:hover {
+  background-color: #28a964;
+}
+
+.card-title {
+  color: #035e36;
+}
+
+.card-img-top {
+  height: 200px;
+  object-fit: cover;
+}

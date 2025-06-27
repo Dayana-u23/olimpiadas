@@ -1,0 +1,149 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contacto - Turismo Pancracio</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/menu.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+</head>
+<body>
+<nav class="navbar navbar-expand-lg shadow-sm">
+  <div class="container-fluid">
+    <a class="navbar-brand d-flex align-items-center" href="index.html">
+      <img src="https://cdn-icons-png.flaticon.com/512/854/854878.png" class="logo-icon" alt="Logo" />
+      Turismo Pancracio
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainMenu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="mainMenu">
+      <ul class="navbar-nav mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link" href="index.html"><i class="bi bi-house-door-fill"></i> Inicio</a></li>
+        <li class="nav-item"><a class="nav-link" href="Paquetes.html"><i class="bi bi-globe-americas"></i> Paquetes</a></li>
+        <li class="nav-item"><a class="nav-link" href="carrito.html"><i class="bi bi-cart4"></i> Carrito</a></li>
+        <li class="nav-item"><a class="nav-link" href="contacto.html"><i class="bi bi-envelope-fill"></i> Contacto</a></li>
+
+        <li class="nav-item" id="menu-general">
+          <a class="nav-link" id="menu-login-link" href="registro.html">
+            <i class="bi bi-person-fill"></i> Iniciar sesión / Registrarse
+          </a>
+        </li>
+        <li class="nav-item cliente-only" style="display: none;">
+          <a class="nav-link" id="cliente-menu-link" href="php/mi_cuenta.php">
+            <i class="bi bi-person-circle"></i> Mi cuenta
+          </a>
+        </li>
+     <li class="nav-item dropdown jefe-only" style="display: none;">
+     <a class="nav-link dropdown-toggle" href="#" id="jefeDropdownToggle">
+  <i class="bi bi-briefcase-fill"></i> Panel de Ventas
+</a>
+<ul class="dropdown-menu" id="jefeDropdownMenu">
+  <li><a class="dropdown-item" href="carga_productos.html">Cargar Producto</a></li>
+  <li><a class="dropdown-item" href="pedidos.html">Ver Pedidos</a></li>
+  <li><a class="dropdown-item" href="estado_cuenta.html">Estado de Cuenta</a></li>
+</ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container py-5">
+  <div class="icon-wrapper">
+    <i class="bi bi-chat-dots"></i>
+  </div>
+  <div class="text-center mb-5">
+    <h2 class="text-success fw-bold">¡Hablemos!</h2>
+    <p class="text-muted">Si tenés dudas, consultas o sugerencias, escribinos y te responderemos a la brevedad.</p>
+  </div>
+<div class="form-section">
+  <form action="php/enviar_mensaje.php" method="post" id="formContacto">
+    <div class="mb-3">
+      <label for="nombre" class="form-label">Nombre completo</label>
+      <input type="text" class="form-control" id="nombre" name="nombre" required>
+    </div>
+    <div class="mb-3">
+      <label for="email" class="form-label">Correo electrónico</label>
+      <input type="email" class="form-control" id="email" name="email" required>
+    </div>
+    <div class="mb-3">
+      <label for="mensaje" class="form-label">Mensaje</label>
+      <textarea class="form-control" id="mensaje" name="mensaje" rows="5" required></textarea>
+    </div>
+    <div class="text-end">
+      <button type="submit" class="btn btn-send"><i class="bi bi-send"></i> Enviar mensaje</button>
+    </div>
+  </form>
+</div>
+
+
+<script src="/js/bootstrap.bundle.min.js"></script>
+<script src="/js/script_menu.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const loginLink = document.getElementById('menu-login-link');
+    const tipoUsuario = localStorage.getItem('tipo_usuario');
+    const nombreUsuario = localStorage.getItem('nombre_usuario');
+
+    if (loginLink && tipoUsuario && nombreUsuario) {
+      if (tipoUsuario === 'cliente') {
+        loginLink.innerHTML = '<i class="bi bi-person-circle"></i> Mi cuenta (' + nombreUsuario + ')';
+        loginLink.href = '/php/mi_cuenta.php';
+      }
+    }
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const loginLink = document.getElementById('menu-login-link');
+    const clienteMenus = document.querySelectorAll('.cliente-only');
+    const jefeMenus = document.querySelectorAll('.jefe-only');
+
+    const tipoUsuario = localStorage.getItem('tipo_usuario');
+    const nombreUsuario = localStorage.getItem('nombre_usuario');
+
+    if (loginLink && tipoUsuario && nombreUsuario) {
+      if (tipoUsuario === 'cliente') {
+   
+        loginLink.style.display = 'none';
+        clienteMenus.forEach(el => el.style.display = 'block');
+        jefeMenus.forEach(el => el.style.display = 'none');
+      } else if (tipoUsuario === 'jefe') {
+      
+        loginLink.style.display = 'none';
+        clienteMenus.forEach(el => el.style.display = 'none');
+        jefeMenus.forEach(el => el.style.display = 'block');
+      } else {
+       
+        loginLink.style.display = 'block';
+        clienteMenus.forEach(el => el.style.display = 'none');
+        jefeMenus.forEach(el => el.style.display = 'none');
+      }
+    } else {
+
+      loginLink.style.display = 'block';
+      clienteMenus.forEach(el => el.style.display = 'none');
+      jefeMenus.forEach(el => el.style.display = 'none');
+    }
+  });
+</script>
+<script>
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('enviado') === 'ok') {
+    alert('✅ ¡Mensaje enviado correctamente! Te responderemos pronto.');
+  } else if (params.get('error') === 'envio') {
+    alert('❌ Hubo un error al enviar tu mensaje. Intentá nuevamente.');
+  } else if (params.get('error') === 'faltan_datos') {
+    alert('⚠️ Completá todos los campos del formulario.');
+  } else if (params.get('error') === 'metodo') {
+    alert('🚫 Método no permitido.');
+  }
+</script>
+
+<script src="js/panelJefeVentas.js"></script>
+<script src="js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
