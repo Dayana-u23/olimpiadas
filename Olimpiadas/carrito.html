@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<script>
+    const tipoUsuario = localStorage.getItem('tipo_usuario');
+    if (tipoUsuario === 'jefe') {
+      alert('Acceso denegado: El jefe de ventas no puede ingresar al carrito.');
+      window.location.href = 'index.html';
+    }
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Carrito- Turismo Pancracio</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/menu.css" />
+    <scrip scr="https://smtpjs.com/v3/smtp.js"></scrip>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+</head>
+<body>
+<nav class="navbar navbar-expand-lg shadow-sm">
+  <div class="container-fluid">
+    <a class="navbar-brand d-flex align-items-center" href="index.html">
+      <img src="https://cdn-icons-png.flaticon.com/512/854/854878.png" class="logo-icon" alt="Logo" />
+      Turismo Pancracio
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainMenu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="mainMenu">
+      <ul class="navbar-nav mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link" href="index.html"><i class="bi bi-house-door-fill"></i> Inicio</a></li>
+        <li class="nav-item"><a class="nav-link" href="Paquetes.php"><i class="bi bi-globe-americas"></i> Paquetes</a></li>
+        <li class="nav-item"><a class="nav-link" href="carrito.html"><i class="bi bi-cart4"></i> Carrito</a></li>
+        <li class="nav-item"><a class="nav-link" href="contacto.html"><i class="bi bi-envelope-fill"></i> Contacto</a></li>
+
+        <li class="nav-item" id="menu-general">
+          <a class="nav-link" id="menu-login-link" href="registro.html">
+            <i class="bi bi-person-fill"></i> Iniciar sesión / Registrarse
+          </a>
+        </li>
+<li class="nav-item cliente-only" style="display: none;">
+  <a class="nav-link" id="cliente-menu-link" href="php/mi_cuenta.php">
+    <i class="bi bi-person-circle"></i> Mi cuenta
+  </a>
+</li>
+     <li class="nav-item dropdown jefe-only" style="display: none;">
+     <a class="nav-link dropdown-toggle" href="#" id="jefeDropdownToggle">
+  <i class="bi bi-briefcase-fill"></i> Panel de Ventas
+</a>
+<ul class="dropdown-menu" id="jefeDropdownMenu">
+  <li><a class="dropdown-item" href="carga_productos.html">Cargar Producto</a></li>
+  <li><a class="dropdown-item" href="pedidos.html">Ver Pedidos</a></li>
+  <li><a class="dropdown-item" href="estado_cuenta.php">Estado de Cuenta</a></li>
+</ul>
+    </div>
+  </div>
+</nav>
+<div class="container py-5">
+  <h2 class="mb-4 text-success text-center">🛒 Tu Carrito</h2>
+  <div id="carrito-contenido"></div>
+  <div id="total" class="mt-4 fs-5 text-end total"></div>
+</div>
+
+<script src="js/carrito.js"></script>
+ <script src="js/bootstrap.min.js"></script>
+<script src="/js/script_menu.js"></script>
+<script src="js/login.js"></script>
+
+<div class="text-center mb-5">
+  <button class="btn btn-primary btn-lg" id="btnConfirmarCompra" data-bs-toggle="modal" data-bs-target="#pagoModal">
+    Confirmar Compra
+  </button>
+</div>
+<div class="modal fade" id="pagoModal" tabindex="-1" aria-labelledby="pagoModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="pagoModalLabel">Selecciona un método de pago</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <p class="fw-bold text-success">Total a pagar: <span id="montoTotal">$0</span></p>
+
+        <div class="mb-3">
+          <label class="form-label">Método de pago:</label>
+          <select id="metodoPago" class="form-select">
+            <option value="">Selecciona...</option>
+            <option value="tarjeta">Tarjeta</option>
+            <option value="transferencia">Transferencia</option>
+            <option value="efectivo">Efectivo</option>
+          </select>
+        </div>
+
+        <div id="formularioTarjeta" style="display: none;">
+          <hr>
+          <h6>Datos de la tarjeta</h6>
+          <div class="mb-2">
+            <label class="form-label">Tipo de tarjeta:</label>
+            <select class="form-select">
+              <option>Visa</option>
+              <option>MasterCard</option>
+              <option>American Express</option>
+            </select>
+          </div>
+          <div class="mb-2">
+            <label class="form-label">Número de tarjeta:</label>
+            <input type="text" class="form-control" placeholder="XXXX XXXX XXXX XXXX">
+          </div>
+          <div class="mb-2">
+            <label class="form-label">Fecha de vencimiento:</label>
+            <input type="month" class="form-control">
+          </div>
+          <div class="mb-2">
+            <label class="form-label">CVV:</label>
+            <input type="text" class="form-control" placeholder="3 dígitos">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+ <button type="button" class="btn btn-success" id="finalizarCompra">Finalizar Compra</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div id="btnVerCompraContainer" style="display:block; text-align:center; margin-top:20px;">
+  <button id="btnVerCompra" class="btn btn-success rounded-pill px-4 py-2" disabled>
+    <i class="bi bi-receipt"></i> Ver mi compra
+  </button>
+  <p id="mensajeEstado" class="mt-2 text-warning"></p>
+</div>
+
+<script>
+
+
+  const btnVerCompra = document.getElementById('btnVerCompra');
+  const mensajeEstado = document.getElementById('mensajeEstado');
+
+  if (idPedido) {
+    btnVerCompra.disabled = false;
+    btnVerCompra.onclick = () => {
+      window.location.href = `ver_compra.html?id_pedido=${idPedido}`;
+    };
+    mensajeEstado.textContent = '';
+  } else {
+ 
+    mensajeEstado.textContent = 'No hay compras recientes para mostrar.';
+  }
+</script>
+
+
+<script src="js/login.js"></script>
+<script src="js/bootstrap.bundle.min.js"></script>
+<script src="js/panelJefeVentas.js"></script>
+<script src="js/metedo_pago.js"></script>
+<script src="js/script_menu.js"></script>
+</body>
+</html>
